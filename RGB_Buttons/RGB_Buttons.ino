@@ -7,9 +7,9 @@
 
 // Set the MAC address
 byte mac[] = { 0x90, 0xA0, 0xDA, 0x0F, 0x5E, 0x69 };
-
-// Set fallback IP address if DHCP fails
-//IPAddress ip(192.168.001.243);
+byte ip[] = { 192, 168, 1, 243 };                      // ip in lan (that's what you need to use in your browser. ("192.168.1.240")
+byte gateway[] = { 192, 168, 0, 1 };                   // internet access via router
+byte subnet[] = { 255, 255, 240, 0 };                  //subnet mask
 
 // Set the broker server IP
 IPAddress server(192, 168, 5, 150);
@@ -1855,10 +1855,10 @@ void setup()
   Serial.println("MCP27017 Driver Loading");
   Wire.begin();
   CS.initialize();
-  CS.portPullup(0, 0b1111111111111111);
-  CS.portPullup(1, 0b1111111111111111);
-  CS.portPullup(2, 0b1111111111111111);
-  CS.portPullup(3, 0b1111111111111111);
+  CS.portPullup(0, 65535);
+  CS.portPullup(1, 65535);
+  CS.portPullup(2, 65535);
+  CS.portPullup(3, 65535);
   Serial.println("MCP23017 Driver OK");
 
   Serial.println("TLC5974 Driver Loading");
@@ -1871,8 +1871,9 @@ void setup()
   Serial.println("TLC5974 Driver OK");
 
   Serial.println("Checking DHCP:");
-  Ethernet.begin(mac);
-
+  Ethernet.begin(mac); // DHCP IP
+//  Ethernet.begin(mac,ip); // Static IP
+  
   Serial.print("My address:");
   Serial.println(Ethernet.localIP());
 
